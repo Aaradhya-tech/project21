@@ -3,13 +3,17 @@ var weight1,weight2,weight3;
 var bullet1,bullet2,bullet3;
 var wall;
 var thickness;
+var deformation;
+var damage;
 
 function setup() {
   createCanvas(1200,400);
   
   thickness = random(20,80);
-  speed1 = random(9,3);
-  weight1 = random(3,5);
+  speed1 = random(55,90);
+  weight1 = random(400,1500);
+  speed2 = random(223,321);
+  weight2 = random(30,50);
 
 
   bullet1 = createSprite(40, 200, 80, 20);
@@ -20,7 +24,7 @@ function setup() {
   wall.shapeColor = "yellow";
 
   bullet1.velocityX = speed1;
- 
+  
 
 }
 
@@ -30,27 +34,30 @@ function draw() {
 bullet1.collide(wall);
 
 
-// deformation for car1
-var deformation=0.5 * weight1 * speed1* speed1/22509;
-if(deformation>180)
+if(hasCollided(bullet1,wall)){
+// deformation for bullet1
+deformation=0.5*weight1*speed1*speed1/22509
+console.log(deformation);
+
+if(deformation>100)
 {
-  bullet1.shapeColor=color(255,0,0);
+  bullet1.shapeColor= "red";
 }
 
-if(deformation<180 && deformation>100)
+if(deformation<100 && deformation>20)
 {
-  bullet1.shapeColor=color(230,230,0);
+  bullet1.shapeColor= "green";
 }
 
-if(deformation<100)
+if(deformation<20)
 {
-  bullet1.shapeColor=color(0,255,0);
+  bullet1.shapeColor= "yellow";
 }
+
 
 // damage of wall 
-var damage = 0.5*speed1*weight1*speed1/thickness*thickness*thickness
 
-console.log(damage);
+damage = 0.5*speed2*weight2*speed2/thickness*thickness*thickness
 
 if(damage<3000){
   wall.shapeColor = "green";
@@ -59,8 +66,19 @@ if(damage<3000){
 if(damage>3000){
   wall.shapeColor = "red";
 }
+}
 
 drawSprites();
+}
+
+function hasCollided(mv,sv){
+  if(mv.x-sv.x < mv.width/2 + sv.width/2 && sv.x - mv.x < mv.width/2 + sv.width/2 ){
+   return true
+  }
+  else{
+    
+  return false
+  }
 }
 
 
